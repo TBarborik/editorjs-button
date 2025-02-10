@@ -11,19 +11,25 @@
     margin: auto;
 }
 
-.anyButtonContainer__inputHolder{}
-
-.anyButtonContainer__inputHolder > * {
-    margin-bottom: 10px;
+.anyButtonContainer__inputHolder {
+    gap: 4px;
+    display: flex;
+    flex-wrap: wrap;
 }
 
 .anyButtonContainer__input {
+    flex: 0 0 calc(50% - 2px);
     padding-left: 38px;
     background-repeat: no-repeat;
     background-position: 10px;
     white-space: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;
+    background-color: white;
+
+    i, b, u {
+        font-size: 1em;
+    }
 }
 
 .anyButtonContainer__input--link{

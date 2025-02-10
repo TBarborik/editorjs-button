@@ -8,34 +8,29 @@
     "editor.js",
     "editorjs"
   ],
-  "description": "Button to set link and text for Editor.js",
+  "description": "Modified button to set link and text for Editor.js",
   "license": "MIT",
   "main": "./dist/bundle.js",
   "scripts": {
     "build": "webpack --mode production",
     "build:dev": "webpack --mode development --watch"
   },
-  "author": "kaaaaaaaaaaai <kaiogita+npm@gmail.com>",
+  "author": "Tom Barbořík <tom@codethatworks.dev>",
   "devDependencies": {
     "cross-env": "^7.0.3",
     "raw-loader": "^4.0.1"
   },
-  "bugs": {
-    "url": "https://github.com/kaaaaaaaaaaai/editorjs-button/issues"
-  },
-  "homepage": "https://github.com/kaaaaaaaaaaai/editorjs-button#readme",
   "directories": {
     "example": "example"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/kaaaaaaaaaaai/editorjs-button.git"
+    "url": "https://github.com/TBarborik/editorjs-button.git"
   },
   "dependencies": {
     "@babel/core": "^7.24.4",
     "@babel/preset-env": "^7.24.4",
     "babel-loader": "^9.1.3",
-    "codex-notifier": "^1.1.2",
     "css-loader": "^7.1.1",
     "sass": "^1.75.0",
     "sass-loader": "^14.2.1",
