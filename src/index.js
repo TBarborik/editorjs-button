@@ -168,7 +168,8 @@ export default class AnyButton {
 
 		this.nodes.linkInput = this.make('input', [this.api.styles.input, this.CSS.input, this.CSS.inputLink], {
 			type: "text",
-			required: true
+			required: !this.readOnly,
+			disabled: this.readOnly
 		});
 		this.nodes.linkInput.dataset.placeholder = this.api.i18n.t('Link Url');
 
