@@ -1,5 +1,6 @@
 import './index.scss';
 import svg from './toolbox-icon.svg';
+import newTabSvg from './new-tab-icon.svg';
 
 export default class AnyButton {
 	/** @type {{[key: string]: HTMLElement | null}} **/
@@ -33,6 +34,37 @@ export default class AnyButton {
 		return false;
 	}
 
+	static get tunes() {
+		return [
+			{
+				name: 'newTab',
+				icon: newTabSvg,
+				title: 'Open in new tab',
+				toggle: true
+			}
+		];
+	}
+
+	renderSettings() {
+		const tunes = AnyButton.tunes.concat(this.config.actions || []);
+
+		return tunes.map(tune => ({
+			icon: tune.icon,
+			label: this.api.i18n.t(tune.title),
+			name: tune.name,
+			toggle: tune.toggle,
+			isActive: this.data[tune.name],
+			onActivate: () => {
+				if (typeof tune.action === 'function') {
+					tune.action(tune.name);
+
+					return;
+				}
+				this.tuneToggled(tune.name);
+			}
+		}));
+	}
+
 	/**
 	 *
 	 * @param data
@@ -40,7 +72,8 @@ export default class AnyButton {
 	set data(data) {
 		this._data = Object.assign({}, {
 			link: this.api.sanitizer.clean(data.link || '', AnyButton.sanitize),
-			text: data.text || ''
+			text: data.text || '',
+			newTab: data.newTab
 		});
 	}
 
@@ -61,14 +94,14 @@ export default class AnyButton {
 
 	/**
 	 *
-	 * @returns {{link: string, text: string}}
+	 * @returns {{link: string, text: string, newTab?: boolean}}
 	 */
 	save() {
 		return this._data;
 	}
 
 	/**
-	 * @returns {{link: boolean, text: boolean}}
+	 * @returns {{link: boolean, text: boolean, newTab: boolean}}
 	 */
 	static get sanitize() {
 		return {
@@ -101,6 +134,7 @@ export default class AnyButton {
 	constructor({data, config, api, readOnly}) {
 		this.api = api;
 		this.readOnly = readOnly;
+		this.config = config;
 
 		this.nodes = {
 			wrapper: null,
@@ -135,9 +169,10 @@ export default class AnyButton {
 
 		this.data = {
 			link: '',
-			text: ''
+			text: '',
+			newTab: false
 		};
-		this.data = data;
+		this.data = {...this.data, ...data};
 
 	}
 
@@ -167,19 +202,19 @@ export default class AnyButton {
 		this.nodes.textInput.dataset.placeholder = this.api.i18n.t('Button Text');
 
 		this.nodes.linkInput = this.make('input', [this.api.styles.input, this.CSS.input, this.CSS.inputLink], {
-			type: "text",
+			type: 'text',
 			required: !this.readOnly,
 			disabled: this.readOnly
 		});
 		this.nodes.linkInput.dataset.placeholder = this.api.i18n.t('Link Url');
 
 		this.nodes.linkInput.addEventListener('input', () => {
-			this.data = { ...this.data, 'link': this.nodes.linkInput.value};
-		})
+			this.data = {...this.data, 'link': this.nodes.linkInput.value};
+		});
 
 		this.nodes.textInput.addEventListener('input', () => {
-			this.data = { ...this.data, 'text': this.nodes.textInput.innerHTML};
-		})
+			this.data = {...this.data, 'text': this.nodes.textInput.innerHTML};
+		});
 
 		inputHolder.appendChild(this.nodes.textInput);
 		inputHolder.appendChild(this.nodes.linkInput);
@@ -213,5 +248,13 @@ export default class AnyButton {
 		}
 
 		return el;
+	}
+
+	tuneToggled(tuneName) {
+		this.setTune(tuneName, !this._data[tuneName]);
+	}
+
+	setTune(tuneName, value) {
+		this._data[tuneName] = value;
 	}
 }
